@@ -9,12 +9,6 @@ function MealItem({ id, name, price, description }) {
   const Fixedprice = `$${price.toFixed(2)}`;
 
   const addToCartHanlder = (amount) => {
-    // console.log({
-    //   id,
-    //   name,
-    //   amount,
-    //   price,
-    // });
     cartCtx.addItem({
       id,
       name,
