@@ -6,7 +6,7 @@ import CartItem from "./CartItem";
 
 function Cart({ onClose }) {
   const cartCtx = useContext(CartContext);
-
+  //To make the amount 00.00 only
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
 
