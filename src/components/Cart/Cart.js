@@ -7,6 +7,8 @@ import Checkout from "./Checkout";
 
 function Cart({ onClose }) {
   const [isCheckout, setIsCheckout] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
   const cartCtx = useContext(CartContext);
   //To make the amount 00.00 only
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
@@ -21,6 +23,22 @@ function Cart({ onClose }) {
 
   const orderHandler = () => {
     setIsCheckout(true);
+  };
+
+  const submitOrderHandler = async (userData) => {
+    setIsSubmitting(true);
+    const response = await fetch(
+      "https://react-http-c6eb2-default-rtdb.europe-west1.firebasedatabase.app/orders.json",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          user: userData,
+          orderedItems: cartCtx.items,
+        }),
+      }
+    );
+    setIsSubmitting(false);
+    setDidSubmit(true);
   };
 
   const cartItems = (
@@ -55,7 +73,7 @@ function Cart({ onClose }) {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckout && <Checkout onCancel={onClose} />}
+      {isCheckout && <Checkout onCancel={onClose} onConfirm={submitOrderHandler} />}
       {!isCheckout && modalActions}
     </Modal>
   );
